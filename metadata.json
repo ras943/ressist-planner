@@ -1,0 +1,5 @@
+{
+  "name": "AI Strategy Generator",
+  "description": "An intelligent web application that leverages the Gemini API to generate custom, actionable strategies based on user-defined topics, goals, and target audiences. The app saves your strategy for future reference.",
+  "requestFramePermissions": []
+}

@@ -1,0 +1,43 @@
+name: Create Release
+on:
+  push:
+    tags:
+      - 'v*' # Triggers on tags like v1.0.0, v2.0.0, etc.
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+    steps:
+      # Checkout the repository
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # Set up Node.js
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20' # Adjust based on your package.json requirements
+
+      # Install dependencies
+      - name: Install dependencies
+        run: npm install
+
+      # Build the app
+      - name: Build
+        run: npm run build
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }} # Ensure this is set in GitHub Secrets
+
+      # Create a GitHub Release
+      - name: Create Release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref_name }}
+          release_name: Release ${{ github.ref_name }}
+          body: |
+            Release for AI Strategy Planner app.
+            - Commit: ${{ github.sha }}
+            - Features: Initialized AI Strategy Generator app
+          draft: false
+          prerelease: false
